@@ -164,13 +164,16 @@ para la siguiente vemos una relación normal o aceptable de la SNR.
 La mejora en la calidad del audio es evidente gracias al aumento en la relación señal-ruido (SNR), con valores superiores a 32 dB en todos los casos. Esto indica que la señal ha sido limpiada de manera efectiva, reduciendo el impacto del ruido.  
 
 Si bien no se logra una separación perfecta de las voces, sí se pueden distinguir de manera más clara en comparación con el audio original. Esto demuestra que el filtrado aplicado ha sido exitoso en mejorar la inteligibilidad de las señales.  
-
-Es destacable que la voz 2, que en análisis previos había sido la de menor calidad, en esta evaluación muestra la mejor relación SNR con **33.61 dB**, lo que sugiere que el algoritmo de separación ha funcionado especialmente bien en esta señal.  
+Se puede evidenciar los picos menos intensos en comparación a los microfonos del sistema.
+ 
 
 
 
 
 ![18939606-e492-4ab3-8e07-685f906c3090](https://github.com/user-attachments/assets/a8cdccfa-1e4e-47f6-8606-318e8c5dfd47)
+
+Es destacable que la voz 2, que en análisis previos había sido la de menor calidad, en esta evaluación muestra la mejor relación SNR con **33.61 dB**, lo que sugiere que el algoritmo de separación ha funcionado especialmente bien en esta señal. 
+
 ![763345c4-28d9-4377-bbad-82df8548b407](https://github.com/user-attachments/assets/b1278dfb-77e4-44f4-8976-810e380efb53)
 
 
