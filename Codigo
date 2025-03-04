@@ -1,0 +1,295 @@
+import numpy as np
+import librosa
+import tkinter as tk
+from tkinter import filedialog
+from tkinter import messagebox
+import soundfile as sf
+import matplotlib.pyplot as plt
+from scipy import signal
+
+def cargar_archivo(tipo_archivo):
+    """
+    Función para abrir una ventana de selección de archivos.
+    """
+    file_path = filedialog.askopenfilename(title=f"Selecciona el archivo de audio ({tipo_archivo})", 
+                                           filetypes=[("Archivos de Audio", "*.wav *.mp3 *.m4a")])
+    return file_path
+
+def calcular_snr(señal, ruido):
+    """
+    Función para calcular el SNR (relación señal/ruido).
+    """
+    # Calcular la potencia de la señal
+    P_señal = np.mean(señal ** 2)
+    
+    # Calcular la potencia del ruido
+    P_ruido = np.mean(ruido ** 2)
+    
+    # Calcular SNR en decibelios
+    snr = 10 * np.log10(P_señal / P_ruido)
+    return snr
+
+def analizar_snr():
+    """
+    Función para analizar el SNR y separar la señal del ruido con tres voces.
+    """
+    archivo_voz1 = cargar_archivo('Voz 1')
+    archivo_voz2 = cargar_archivo('Voz 2')
+    archivo_voz3 = cargar_archivo('Voz 3')
+    archivo_ruido = cargar_archivo('Ruido Ambiental')  # Subir el archivo de ruido ambiente
+    
+    if archivo_voz1 and archivo_voz2 and archivo_voz3 and archivo_ruido:
+        try:
+            # Cargar las señales de las tres voces y el ruido ambiental
+            señal_voz1, sr1 = librosa.load(archivo_voz1, sr=None)
+            señal_voz2, sr2 = librosa.load(archivo_voz2, sr=None)
+            señal_voz3, sr3 = librosa.load(archivo_voz3, sr=None)
+            señal_ruido, sr_ruido = librosa.load(archivo_ruido, sr=None)
+
+            min_len = min(len(señal_voz1), len(señal_voz2), len(señal_voz3), len(señal_ruido))
+            señal_voz1 = señal_voz1[:min_len]
+            señal_voz2 = señal_voz2[:min_len]
+            señal_voz3 = señal_voz3[:min_len]
+            señal_ruido = señal_ruido[:min_len]
+            
+            # Calcular SNR de las tres voces respecto al ruido
+            snr_voz1 = calcular_snr(señal_voz1, señal_ruido)
+            snr_voz2 = calcular_snr(señal_voz2, señal_ruido)
+            snr_voz3 = calcular_snr(señal_voz3, señal_ruido)
+
+            # Mostrar los resultados del SNR en un mensaje
+            messagebox.showinfo("SNR de las Voces", f"SNR Voz 1: {snr_voz1:.2f} dB\nSNR Voz 2: {snr_voz2:.2f} dB\nSNR Voz 3: {snr_voz3:.2f} dB")
+            
+            # Realizar análisis temporal y espectral
+            analizar_analisis_temporal_y_espectral(señal_voz1, señal_voz2, señal_voz3, sr1)
+        except Exception as e:
+            messagebox.showerror("Error", f'Ocurrió un error: {str(e)}')
+    else:
+        messagebox.showwarning("Advertencia", "Debe seleccionar los tres archivos de audio y el archivo de ruido ambiental.")
+
+def analizar_analisis_temporal_y_espectral(señal_voz1, señal_voz2, señal_voz3, sr):
+    """
+    Función para realizar el análisis temporal y espectral de las tres señales.
+    """
+    # Análisis temporal de las señales
+    plt.figure(figsize=(15, 10))
+    
+    # Gráfico temporal - Voz 1
+    plt.subplot(2, 3, 1)
+    plt.plot(señal_voz1, label="Voz 1", color='blue')
+    plt.title("Análisis Temporal - Voz 1")
+    plt.xlabel("Tiempo (muestras)")
+    plt.ylabel("Amplitud")
+    plt.legend()
+
+    # Gráfico temporal - Voz 2
+    plt.subplot(2, 3, 2)
+    plt.plot(señal_voz2, label="Voz 2", color='green')
+    plt.title("Análisis Temporal - Voz 2")
+    plt.xlabel("Tiempo (muestras)")
+    plt.ylabel("Amplitud")
+    plt.legend()
+
+    # Gráfico temporal - Voz 3
+    plt.subplot(2, 3, 3)
+    plt.plot(señal_voz3, label="Voz 3", color='red')
+    plt.title("Análisis Temporal - Voz 3")
+    plt.xlabel("Tiempo (muestras)")
+    plt.ylabel("Amplitud")
+    plt.legend()
+
+    # Análisis espectral (usando FFT) y Densidad espectral (Welch) - Voz 1
+    fft_voz1 = np.fft.fft(señal_voz1)
+    freqs = np.fft.fftfreq(len(señal_voz1), d=1/sr)
+    half = len(señal_voz1) // 2
+    fft_voz1 = np.abs(fft_voz1[:half])
+    freqs = freqs[:half]
+    
+    # Calcular la densidad espectral usando Welch
+    f1, Pxx_den1 = signal.welch(señal_voz1, fs=sr, nperseg=1024)
+
+    # Gráfico combinado - Voz 1 (FFT y Densidad espectral)
+    plt.subplot(2, 3, 4)
+    plt.plot(freqs, fft_voz1, label="FFT Voz 1", color='blue')
+    plt.semilogy(f1, Pxx_den1, label="Densidad espectral Voz 1 (Welch)", color='cyan', linestyle='--')
+    plt.yscale('log')  # Escala logarítmica en el eje Y
+    plt.title("Análisis Espectral y Densidad Espectral - Voz 1")
+    plt.xlabel("Frecuencia (Hz)")
+    plt.ylabel("Magnitud (Escala logarítmica)")
+    plt.legend()
+
+    # Análisis espectral (usando FFT) y Densidad espectral (Welch) - Voz 2
+    fft_voz2 = np.fft.fft(señal_voz2)
+    fft_voz2 = np.abs(fft_voz2[:half])
+
+    # Calcular la densidad espectral usando Welch
+    f2, Pxx_den2 = signal.welch(señal_voz2, fs=sr, nperseg=1024)
+
+    # Gráfico combinado - Voz 2 (FFT y Densidad espectral)
+    plt.subplot(2, 3, 5)
+    plt.plot(freqs, fft_voz2, label="FFT Voz 2", color='green')
+    plt.semilogy(f2, Pxx_den2, label="Densidad espectral Voz 2 (Welch)", color='lime', linestyle='--')
+    plt.yscale('log')  # Escala logarítmica en el eje Y
+    plt.title("Análisis Espectral y Densidad Espectral - Voz 2")
+    plt.xlabel("Frecuencia (Hz)")
+    plt.ylabel("Magnitud (Escala logarítmica)")
+    plt.legend()
+
+    # Análisis espectral (usando FFT) y Densidad espectral (Welch) - Voz 3
+    fft_voz3 = np.fft.fft(señal_voz3)
+    fft_voz3 = np.abs(fft_voz3[:half])
+
+    # Calcular la densidad espectral usando Welch
+    f3, Pxx_den3 = signal.welch(señal_voz3, fs=sr, nperseg=1024)
+
+    # Gráfico combinado - Voz 3 (FFT y Densidad espectral)
+    plt.subplot(2, 3, 6)
+    plt.plot(freqs, fft_voz3, label="FFT Voz 3", color='red')
+    plt.semilogy(f3, Pxx_den3, label="Densidad espectral Voz 3 (Welch)", color='orange', linestyle='--')
+    plt.yscale('log')  # Escala logarítmica en el eje Y
+    plt.title("Análisis Espectral y Densidad Espectral - Voz 3")
+    plt.xlabel("Frecuencia (Hz)")
+    plt.ylabel("Magnitud (Escala logarítmica)")
+    plt.legend()
+
+    # Mostrar todas las gráficas
+    plt.tight_layout()
+    plt.show()
+
+# Crear ventana de interfaz gráfica
+root = tk.Tk()
+root.title("Análisis de Audio - Tres Voces")
+
+# Agregar un botón para analizar SNR y realizar análisis de tres voces
+boton_analizar_snr = tk.Button(root, text="Analizar 3 Voces", command=analizar_snr, width=30)
+boton_analizar_snr.pack(pady=20)
+
+# Iniciar la interfaz gráfica
+root.mainloop()
+
+ #codigo dos 
+
+import numpy as np
+import librosa
+import tkinter as tk
+from tkinter import filedialog
+from tkinter import messagebox
+import soundfile as sf
+from sklearn.decomposition import FastICA
+
+def cargar_archivo(tipo_archivo):
+    """
+    Función para abrir una ventana de selección de archivos.
+    """
+    file_path = filedialog.askopenfilename(title=f"Selecciona el archivo de audio ({tipo_archivo})", 
+                                           filetypes=[("Archivos de Audio", "*.wav *.mp3 *.m4a")])
+    return file_path
+
+def guardar_audio(señal, sr, nombre_archivo):
+    """
+    Función para guardar una señal de audio como archivo WAV.
+    """
+    sf.write(nombre_archivo, señal, sr)
+    messagebox.showinfo("Guardado", f"Archivo guardado como: {nombre_archivo}")
+
+def calcular_energia(señal, sr, ventana=1):
+    """
+    Función para calcular la energía de la señal en segmentos de 1 segundo.
+    """
+    # Calcular el número de muestras en 1 segundo
+    samples_por_segundo = sr * ventana
+    num_segmentos = len(señal) // samples_por_segundo
+    energias = []
+
+    for i in range(num_segmentos):
+        # Extraer el segmento de 1 segundo
+        segmento = señal[i * samples_por_segundo: (i + 1) * samples_por_segundo]
+        energia = np.sum(segmento ** 2)  # Energía como la suma de los cuadrados de la amplitud
+        energias.append(energia)
+
+    return np.array(energias)
+
+def seleccionar_mejores_segmentos(señal, sr, num_segundos=5):
+    """
+    Función para seleccionar los mejores 'num_segundos' segundos basados en la energía.
+    """
+    energias = calcular_energia(señal, sr)
+    
+    # Obtener los índices de los 'num_segundos' segmentos con mayor energía
+    indices_mejores = np.argsort(energias)[-num_segundos:]
+
+    # Ordenar los índices para obtener los mejores segundos en orden temporal
+    indices_mejores = np.sort(indices_mejores)
+
+    mejores_segmentos = []
+
+    # Extraer los mejores segmentos
+    for idx in indices_mejores:
+        # Extraer los segmentos de 1 segundo
+        mejores_segmentos.append(señal[idx * sr: (idx + 1) * sr])
+
+    return np.concatenate(mejores_segmentos)  # Concatenar los mejores segmentos
+
+def separar_voces_ica(señales, sr):
+    """
+    Función para separar las voces utilizando ICA (Independent Component Analysis).
+    """
+    # Normalizar las señales
+    señales = (señales - np.mean(señales, axis=1, keepdims=True)) / np.std(señales, axis=1, keepdims=True)
+    
+    # Crear un objeto FastICA para separar las señales
+    ica = FastICA(n_components=3, random_state=0, max_iter=2000, tol=0.0001)  # Incrementar iteraciones y disminuir tolerancia
+
+    # Aplicar ICA para separar las fuentes (las voces)
+    señales_separadas = ica.fit_transform(señales.T).T  # Transponemos para que cada fila sea una señal de un micrófono
+
+    # Guardar las señales separadas como archivos WAV
+    for i, señal in enumerate(señales_separadas):
+        # Seleccionar los mejores 5 segundos basados en la energía
+        señal_mejor = seleccionar_mejores_segmentos(señal, sr, num_segundos=5)  # Usar 5 segundos
+        guardar_audio(señal_mejor, sr, f"voz_participante_{i+1}_separada.wav")
+
+def analizar_snr():
+    """
+    Función para analizar el SNR y separar la señal del ruido con tres micrófonos.
+    """
+    archivo_mic1 = cargar_archivo('Micrófono 1')
+    archivo_mic2 = cargar_archivo('Micrófono 2')
+    archivo_mic3 = cargar_archivo('Micrófono 3')
+    
+    if archivo_mic1 and archivo_mic2 and archivo_mic3:
+        try:
+            # Cargar las señales de los tres micrófonos y resamplear a 44100 Hz
+            señal_mic1, sr1 = librosa.load(archivo_mic1, sr=44100)
+            señal_mic2, sr2 = librosa.load(archivo_mic2, sr=44100)
+            señal_mic3, sr3 = librosa.load(archivo_mic3, sr=44100)
+
+            # Asegurarnos de que todas las señales tengan la misma longitud
+            min_len = min(len(señal_mic1), len(señal_mic2), len(señal_mic3))
+            señal_mic1 = señal_mic1[:min_len]
+            señal_mic2 = señal_mic2[:min_len]
+            señal_mic3 = señal_mic3[:min_len]
+            
+            # Crear una matriz de señales (cada fila es una señal de un micrófono)
+            señales_mic = np.array([señal_mic1, señal_mic2, señal_mic3])
+            
+            # Separar las voces utilizando ICA
+            separar_voces_ica(señales_mic, sr1)
+
+            messagebox.showinfo("Éxito", "Las voces han sido separadas y los mejores 5 segundos han sido guardados como archivos de audio.")
+
+        except Exception as e:
+            messagebox.showerror("Error", f'Ocurrió un error: {str(e)}')
+    else:
+        messagebox.showwarning("Advertencia", "Debe seleccionar los tres archivos de audio.")
+
+# Crear ventana de interfaz gráfica
+root = tk.Tk()
+root.title("Análisis de Audio - Tres Micrófonos")
+
+# Agregar un botón para analizar y separar las voces
+boton_analizar_snr = tk.Button(root, text="Separar Voces", command=analizar_snr, width=30)
+boton_analizar_snr.pack(pady=20)
+
+# Iniciar la interfaz gráfica
+root.mainloop()
