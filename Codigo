@@ -192,24 +192,31 @@ def guardar_audio(señal, sr, nombre_archivo):
     sf.write(nombre_archivo, señal, sr)
     messagebox.showinfo("Guardado", f"Archivo guardado como: {nombre_archivo}")
 
+def reescalar_señal(señal):
+    """
+    Función para normalizar la señal entre -1 y 1.
+    """
+    max_abs = np.max(np.abs(señal))
+    if max_abs > 0:
+        señal = señal / max_abs  # Normaliza entre -1 y 1
+    return señal
+
 def calcular_energia(señal, sr, ventana=1):
     """
     Función para calcular la energía de la señal en segmentos de 1 segundo.
     """
-    # Calcular el número de muestras en 1 segundo
     samples_por_segundo = sr * ventana
     num_segmentos = len(señal) // samples_por_segundo
     energias = []
 
     for i in range(num_segmentos):
-        # Extraer el segmento de 1 segundo
         segmento = señal[i * samples_por_segundo: (i + 1) * samples_por_segundo]
         energia = np.sum(segmento ** 2)  # Energía como la suma de los cuadrados de la amplitud
         energias.append(energia)
 
     return np.array(energias)
 
-def seleccionar_mejores_segmentos(señal, sr, num_segundos=5):
+def seleccionar_mejores_segmentos(señal, sr, num_segundos=10):
     """
     Función para seleccionar los mejores 'num_segundos' segundos basados en la energía.
     """
@@ -223,30 +230,28 @@ def seleccionar_mejores_segmentos(señal, sr, num_segundos=5):
 
     mejores_segmentos = []
 
-    # Extraer los mejores segmentos
     for idx in indices_mejores:
-        # Extraer los segmentos de 1 segundo
         mejores_segmentos.append(señal[idx * sr: (idx + 1) * sr])
 
-    return np.concatenate(mejores_segmentos)  # Concatenar los mejores segmentos
+    return np.concatenate(mejores_segmentos)
 
 def separar_voces_ica(señales, sr):
     """
-    Función para separar las voces utilizando ICA (Independent Component Analysis).
+    Función para separar las voces utilizando ICA.
     """
     # Normalizar las señales
     señales = (señales - np.mean(señales, axis=1, keepdims=True)) / np.std(señales, axis=1, keepdims=True)
     
-    # Crear un objeto FastICA para separar las señales
-    ica = FastICA(n_components=3, random_state=0, max_iter=2000, tol=0.0001)  # Incrementar iteraciones y disminuir tolerancia
+    # Crear un objeto FastICA para separar las fuentes
+    ica = FastICA(n_components=3, random_state=0, max_iter=2000, tol=0.0001)
 
-    # Aplicar ICA para separar las fuentes (las voces)
-    señales_separadas = ica.fit_transform(señales.T).T  # Transponemos para que cada fila sea una señal de un micrófono
+    # Aplicar ICA
+    señales_separadas = ica.fit_transform(señales.T).T  
 
-    # Guardar las señales separadas como archivos WAV
+    # Guardar las señales separadas normalizadas
     for i, señal in enumerate(señales_separadas):
-        # Seleccionar los mejores 5 segundos basados en la energía
-        señal_mejor = seleccionar_mejores_segmentos(señal, sr, num_segundos=5)  # Usar 5 segundos
+        señal_mejor = seleccionar_mejores_segmentos(señal, sr, num_segundos=10)
+        señal_mejor = reescalar_señal(señal_mejor)  # Reescalamos la señal antes de guardarla
         guardar_audio(señal_mejor, sr, f"voz_participante_{i+1}_separada.wav")
 
 def analizar_snr():
@@ -259,10 +264,10 @@ def analizar_snr():
     
     if archivo_mic1 and archivo_mic2 and archivo_mic3:
         try:
-            # Cargar las señales de los tres micrófonos y resamplear a 44100 Hz
-            señal_mic1, sr1 = librosa.load(archivo_mic1, sr=44100)
-            señal_mic2, sr2 = librosa.load(archivo_mic2, sr=44100)
-            señal_mic3, sr3 = librosa.load(archivo_mic3, sr=44100)
+            # Cargar las señales de los tres micrófonos
+            señal_mic1, sr1 = librosa.load(archivo_mic1, sr=None)
+            señal_mic2, sr2 = librosa.load(archivo_mic2, sr=None)
+            señal_mic3, sr3 = librosa.load(archivo_mic3, sr=None)
 
             # Asegurarnos de que todas las señales tengan la misma longitud
             min_len = min(len(señal_mic1), len(señal_mic2), len(señal_mic3))
@@ -276,7 +281,7 @@ def analizar_snr():
             # Separar las voces utilizando ICA
             separar_voces_ica(señales_mic, sr1)
 
-            messagebox.showinfo("Éxito", "Las voces han sido separadas y los mejores 5 segundos han sido guardados como archivos de audio.")
+            messagebox.showinfo("Éxito", "Las voces han sido separadas y los mejores 10 segundos han sido guardados como archivos de audio.")
 
         except Exception as e:
             messagebox.showerror("Error", f'Ocurrió un error: {str(e)}')
@@ -292,4 +297,4 @@ boton_analizar_snr = tk.Button(root, text="Separar Voces", command=analizar_snr,
 boton_analizar_snr.pack(pady=20)
 
 # Iniciar la interfaz gráfica
-root.mainloop()
+root.mainloop(
