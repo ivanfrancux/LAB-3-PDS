@@ -27,23 +27,23 @@ Gracias a esta disposición, se logró registrar una mezcla de voces en cada mic
 ![b6d2aa7b-32d2-4bd8-825b-8dc109608625](https://github.com/user-attachments/assets/204a6149-b674-4dd8-8193-29ccc6ef0ea6)
 
 ## Captura de la Señal 
-- Procesamiento de los archivos de audio
+-  Procesamiento de los archivos de audio
 
-Primero se cargan a Python usando 'filedialog.askopenfilename()' para que asi quien maneje el programa pueda seleccionar los archivos de tres voces y un archivo con el ruido ambiente.
+Primero se cargan a Python usando 'filedialog.askopenfilename()' para que así quien maneje el programa pueda seleccionar los archivos de tres voces y un archivo con el ruido ambiente.
    ```python
    archivo_voz1 = cargar_archivo('Voz 1')
    archivo_voz2 = cargar_archivo('Voz 2')
    archivo_voz3 = cargar_archivo('Voz 3')
    archivo_ruido = cargar_archivo('Ruido Ambiental')
    ```
-Una vez caragados estos archivos se utiliza `librosa.load()`para cargar cada archivo y convertirlo en una señal digital con su frecuencia de muestreo (`sr`).  
+Una vez cargados estos archivos se utiliza `librosa.load()`para cargar cada archivo y convertirlo en una señal digital con su frecuencia de muestreo (`sr`).  
 ```python
    señal_voz1, sr1 = librosa.load(archivo_voz1, sr=None)
    señal_voz2, sr2 = librosa.load(archivo_voz2, sr=None)
    señal_voz3, sr3 = librosa.load(archivo_voz3, sr=None)
    señal_ruido, sr_ruido = librosa.load(archivo_ruido, sr=None)
    ```
-Posteriormente se recortan todas las señales al mismo número de muestras `min_len`) para alinearlas y así poder comparararlas de la mejor manera, y asi porcesar las sañles correctamente para que tengan la misma duracion. 
+Posteriormente, se recortan todas las señales al mismo número de muestras `min_len`) para alinearlas y así poder comparararlas de la mejor manera, y asi porcesar las sañles correctamente para que tengan la misma duracion. 
    ```python
  min_len = min(len(señal_voz1), len(señal_voz2), len(señal_voz3), len(señal_ruido))
    señal_voz1 = señal_voz1[:min_len]
@@ -51,16 +51,16 @@ Posteriormente se recortan todas las señales al mismo número de muestras `min_
    señal_voz3 = señal_voz3[:min_len]
    señal_ruido = señal_ruido[:min_len]
    ```
-- Digitalizacion de la señal.
-   - Frecuencia de muestreo: La frecuencia de muestreo se obtiene automáticamente cuando se carga el archivo de audio con `librosa.load()`, usando `sr=None` para mantener la frecuencia original del archivo, utilizando `sr_senal`para represenytar la frecuencia de muestreo de la señal de voz
+- Digitalización de la señal.
+   - Frecuencia de muestreo: La frecuencia de muestreo se obtiene automáticamente cuando se carga el archivo de audio con `librosa.load()`, usando `sr=None` para mantener la frecuencia original del archivo, utilizando `sr_senal`para representar la frecuencia de muestreo de la señal de voz
      
    ```python
    señal, sr_senal = librosa.load(audio_senal, sr=None)
    ruido, sr_ruido = librosa.load(audio_ruido, sr=None)
    ```  
-
-   - Niveles de cuantificación:  En 'librosa' se normaliza las señales con valores entre -1 y 1 lo que hace que la cuantificacion este en un punto flotante y no con valores enteros tipocos de PCM  (Pulse Code Modulation, o Modulación por Código de Pulsos).
-   -Tiempo de captura: El tiempo de captura se puede calcular dividiendo el número de muestras por la frecuencia de muestreo, siendo la cantidad de muestras de la señal (`len(señal)`) se divide por la frecuencia de muestreo (`sr_senal`) para obtener el tiempo en segundos.  
+	 - Niveles de cuantificación:  En 'librosa' se normaliza las señales con valores entre -1 y 1 lo que hace que la cuantificación esté en un punto flotante y no con valores enteros típicos de PCM  (Pulse Code Modulation, o Modulación por Código de Pulsos).
+       
+	 -Tiempo de captura: El tiempo de captura se puede calcular dividiendo el número de muestras por la frecuencia de muestreo, siendo la cantidad de muestras de la señal (`len(señal)`) se divide por la frecuencia de muestreo (`sr_senal`) para obtener el tiempo en segundos.  
 
 
    ```python
@@ -76,7 +76,7 @@ Posteriormente se recortan todas las señales al mismo número de muestras `min_
 
 ## Análisis Temporal y Frecuencial 
 -Análisis en el Dominio del Tiempo 
-Gráficas de la señal en el dominio temporal: Se visualizan con `plt.plot(señal)`. Para permiten observar la amplitud y la forma de onda.
+Gráficas de la señal en el dominio temporal: Se visualizan con `plt.plot(señal)`. Para observar la amplitud y la forma de onda.
 
 ```python
 plt.subplot(2, 1, 1)
@@ -87,7 +87,7 @@ plt.ylabel("Amplitud")
 plt.legend()
 ```
 	-Análisis en el Dominio de la Frecuencia
-Para Espectros de frecuencia: Se obtiene con `np.fft.fft(señal)` para que la escala sea adecuada en el dominio de la frecuencia utilizamos la escala semilogarítmica `plt.semilogy()` para visualizar mejor los componentes frecuenciales.
+Para espectros de frecuencia: Se obtiene con 'np.fft.fft(señal)` para que la escala sea adecuada en el dominio de la frecuencia. Utilizamos la escala semilogarítmica `plt.semilogy()` para visualizar mejor los componentes frecuenciales.
 
 ```python
 frecuencia = np.fft.fftfreq(len(señal), d=1/sr)
@@ -128,6 +128,11 @@ plt.show()
 ![8e0e4b13-cb1e-410b-a205-a987ad07646b](https://github.com/user-attachments/assets/9dad66e0-2a8a-49c8-b5a6-5e0399aca045)
 
 ![ce406a2c-e788-4fd0-b75c-6ede96abfa14](https://github.com/user-attachments/assets/39a2b798-1ff1-4a54-90b6-abc921a29c1c)
+
+![d67a4c51-7f58-4c4d-baa5-82e444c38e63](https://github.com/user-attachments/assets/f567a829-6ec1-484e-892b-fc6188e4f609)
+
+![641c61cf-314f-4f55-ad54-add83b0b5636](https://github.com/user-attachments/assets/458dbd84-2bf3-45e3-9321-d393796559a0)
+
 
 ## Cocluciones 
 - Limitaciones en la Separación de Fuentes: a pesar de aplicar técnicas básicas de separación de señales mediante sustracción de ruido, no se logró aislar cada una de las tres voces con la claridad deseada. Esto sugiere que la metodología utilizada no es completamente efectiva para resolver el problema de la "Fiesta del Cóctel", lo que indica la necesidad de explorar métodos más avanzados.  
