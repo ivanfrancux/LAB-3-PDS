@@ -147,7 +147,7 @@ Es destacable que la voz 2, que en análisis previos había sido la de menor cal
 
 
 
-## Cocluciones 
+## Conclusiones 
 - Limitaciones en la Separación de Fuentes: a pesar de aplicar técnicas básicas de separación de señales mediante sustracción de ruido, no se logró aislar cada una de las tres voces con la claridad deseada. Esto sugiere que la metodología utilizada no es completamente efectiva para resolver el problema de la "Fiesta del Cóctel", lo que indica la necesidad de explorar métodos más avanzados.  
 
 - Influencia del Entorno en la Captura de la Señal la reverberación y las reflexiones del sonido en el entorno de grabación probablemente afectaron la calidad de las señales capturadas, dificultando su separación. El uso de un espacio con menor reverberación o la implementación de técnicas de preprocesamiento para reducir estos efectos podría mejorar los resultados en futuras pruebas.  
