@@ -149,10 +149,18 @@ El método por el cual se realiza la separación por  FastICA, la cual nos permi
 
 
 ### **Resultados obtenidos**  
-En esta primera imagen podemos evidenciar los diferentes micrófonos la densidad espectral de cada uno y la transformada rápida de Fourier 
+En esta primera imagen podemos evidenciar los diferentes micrófonos la densidad espectral de cada uno y la transformada rápida de Fourier
+
+
 ![image](https://github.com/user-attachments/assets/22b4b938-8c13-47c4-981e-097ab4c856ef)
+
+
 para la siguiente vemos una relación normal o aceptable de la SNR.
+
+
 ![image](https://github.com/user-attachments/assets/9a5dafc2-7975-44bf-b59b-a9cbe39369c4)
+
+
 La mejora en la calidad del audio es evidente gracias al aumento en la relación señal-ruido (SNR), con valores superiores a 32 dB en todos los casos. Esto indica que la señal ha sido limpiada de manera efectiva, reduciendo el impacto del ruido.  
 
 Si bien no se logra una separación perfecta de las voces, sí se pueden distinguir de manera más clara en comparación con el audio original. Esto demuestra que el filtrado aplicado ha sido exitoso en mejorar la inteligibilidad de las señales.  
