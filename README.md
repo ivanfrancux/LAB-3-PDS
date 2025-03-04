@@ -113,7 +113,7 @@ plt.show()
  
  Asumiendo que el ruido capturado es similar al presente en la señal original para permitir la cancelación efectiva.
 
-- Resultados Obtenidos**
+- Resultados Obtenidos
 	- Evaluación cualitativa y cuantitativa se calcula el SNR antes y después de la eliminación del ruido para evaluar la mejora en la calidad.
 
   ```python
