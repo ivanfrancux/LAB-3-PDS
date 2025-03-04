@@ -1,7 +1,8 @@
 # LAB-3-PDS
 ## Introducción  
 Para la ingeniera Biomédica, la separación de fuentes es clave para mejorar la calidad de las señales que se procesan durante el desarrollo  de la tercera práctica del laboratorio de Procesamiento digital de señales se propone la guía "Problema Fiesta del Coctel" la cual tiene como objetivo la creación de un código en Python el cual busca procesar la voz de los 3 estudiantes del laboratorio hablen en distintas ubicaciones y estas señales sean recibidas por 3 micrófonos distribuidos estratégicamente. El objetivo de la práctica comprender y aplicar conceptos claves de análisis espectral y la separación de señales en un entorno realista para así evaluar el desempeño del sistema en función  de la relación señal ruido SNR y la calidad de la señal recuperada y así proponer mejoras en la metodología utilizada.
-## Captura de la Señal para el problema  "fiesta del coctel"
+
+## Captura de la Señal para el problema  "Fiesta del Coctel"
 La toma de la señal se llevó a cabo el 24 de marzo de 2025, entre las 3:30 y 4:00 PM, en la Universidad Militar, específicamente en el Edificio de Estudios a Distancia, cuarto piso.
 
 Para el experimento, se utilizaron tres fuentes de sonido identificadas como H, A y F, correspondientes a tres voces diferentes. La captura de la señal se realizó con los siguientes dispositivos:
@@ -75,6 +76,7 @@ Posteriormente se recortan todas las señales al mismo número de muestras `min_
    ```
 
 ## Análisis Temporal y Frecuencial 
+
 ## Separacion de Fuentes 
 ## Resultados 
 ## Cocluciones 
