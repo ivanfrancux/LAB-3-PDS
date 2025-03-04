@@ -22,7 +22,6 @@ La imagen adjunta ilustra la disposición de los elementos y las distancias exac
 Condiciones de Grabación
 Ambiente: Espacio cerrado con paredes de vidrio y mobiliario, lo que podría generar reflexiones y reverberación.
 Nivel de ruido externo: Relativamente bajo, con posibles interferencias de sonidos ambientales provenientes del exterior.
-Frecuencia de muestreo y resolución: (Aquí debes agregar los valores específicos si los tienes).
 Tiempo de captura: 18 segundos.
 Gracias a esta disposición, se logró registrar una mezcla de voces en cada micrófono, permitiendo la posterior aplicación de técnicas de separación de fuentes en el procesamiento de la señal.
 ![b6d2aa7b-32d2-4bd8-825b-8dc109608625](https://github.com/user-attachments/assets/204a6149-b674-4dd8-8193-29ccc6ef0ea6)
