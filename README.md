@@ -126,6 +126,10 @@ plt.show()
   messagebox.showinfo("Resultado", f'El archivo filtrado se guardó como: {archivo_filtrado}'
    ```   
 ## Resultados 
+![8e0e4b13-cb1e-410b-a205-a987ad07646b](https://github.com/user-attachments/assets/9dad66e0-2a8a-49c8-b5a6-5e0399aca045)
+
+![ce406a2c-e788-4fd0-b75c-6ede96abfa14](https://github.com/user-attachments/assets/39a2b798-1ff1-4a54-90b6-abc921a29c1c)
+
 ## Cocluciones 
 
 
