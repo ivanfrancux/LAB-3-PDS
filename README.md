@@ -75,6 +75,33 @@ Posteriormente se recortan todas las señales al mismo número de muestras `min_
    ```
 
 ## Análisis Temporal y Frecuencial 
+-Análisis en el Dominio del Tiempo 
+Gráficas de la señal en el dominio temporal: Se visualizan con `plt.plot(señal)`. Para permiten observar la amplitud y la forma de onda.
+
+
+```python
+plt.subplot(2, 1, 1)
+plt.plot(señal, label="Señal Original")
+plt.title("Análisis Temporal de la Señal")
+plt.xlabel("Tiempo (muestras)")
+plt.ylabel("Amplitud")
+plt.legend()
+```
+
+	-Análisis en el Dominio de la Frecuencia
+	Para Espectros de frecuencia: Se obtiene con `np.fft.fft(señal)` para que la escala sea adecuada en el dominio de la frecuencia utilizamos la escala semilogarítmica `plt.semilogy()` para visualizar mejor los componentes frecuenciales.
+
+```python
+frecuencia = np.fft.fftfreq(len(señal), d=1/sr)
+espectro = np.abs(np.fft.fft(señal))
+
+plt.subplot(2, 1, 2)
+plt.semilogy(frecuencia[:len(señal)//2], espectro[:len(señal)//2])
+plt.title("Análisis Frecuencial (Espectro de Frecuencia)")
+plt.xlabel("Frecuencia (Hz)")
+plt.ylabel("Magnitud (Escala logarítmica)")
+plt.show()
+```
 
 ## Separacion de Fuentes 
 ## Resultados 
