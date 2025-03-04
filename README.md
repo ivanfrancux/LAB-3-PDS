@@ -31,6 +31,13 @@ Gracias a esta disposición, se logró registrar una mezcla de voces en cada mic
 
 Primero se cargan a Python usando 'filedialog.askopenfilename()' para que así quien maneje el programa pueda seleccionar los archivos de tres voces y un archivo con el ruido ambiente.
    ```python
+def cargar_archivo(tipo_archivo):
+    """
+    Función para abrir una ventana de selección de archivos.
+    """
+    file_path = filedialog.askopenfilename(title=f"Selecciona el archivo de audio ({tipo_archivo})", 
+                                           filetypes=[("Archivos de Audio", "*.wav *.mp3 *.m4a")])
+    return file_path
    archivo_voz1 = cargar_archivo('Voz 1')
    archivo_voz2 = cargar_archivo('Voz 2')
    archivo_voz3 = cargar_archivo('Voz 3')
@@ -52,7 +59,7 @@ Posteriormente, se recortan todas las señales al mismo número de muestras `min
    señal_ruido = señal_ruido[:min_len]
    ```
 - Digitalización de la señal.
-   - Frecuencia de muestreo: La frecuencia de muestreo se obtiene automáticamente cuando se carga el archivo de audio con `librosa.load()`, usando `sr=None` para mantener la frecuencia original del archivo, utilizando `sr_senal`para representar la frecuencia de muestreo de la señal de voz
+   - Frecuencia de muestreo: La frecuencia de muestreo se obtiene automáticamente cuando se carga el archivo de audio con `librosa.load()`, usando `sr=None` para mantener la frecuencia original del archivo, utilizando `sr_senal` para representar la frecuencia de muestreo de la señal de voz
      
    ```python
    señal, sr_senal = librosa.load(audio_senal, sr=None)
@@ -101,17 +108,32 @@ plt.ylabel("Magnitud (Escala logarítmica)")
 plt.show()
 ```
 
-## Separacion de Fuentes 
+## Separación de Fuentes 
 - Métodos Utilizados
 	- Descripción del algoritmo de separación se usa la resta entre la señal original y el ruido (`señal - ruido`) para obtener una señal limpia.
   
   ```python
-  señal_sin_ruido = señal - ruido
-  señal_sin_ruido = np.clip(señal_sin_ruido, -1.0, 1.0)  # Evita saturación
-  sf.write("salida_sin_ruido.wav", señal_sin_ruido, sr_senal)
+  def separar_voces_ica(señales, sr):
+    """
+    Función para separar las voces utilizando ICA.
+    """
+    # Normalizar las señales
+    señales = (señales - np.mean(señales, axis=1, keepdims=True)) / np.std(señales, axis=1, keepdims=True)
+    
+    # Crear un objeto FastICA para separar las fuentes
+    ica = FastICA(n_components=3, random_state=0, max_iter=2000, tol=0.0001)
+
+    # Aplicar ICA
+    señales_separadas = ica.fit_transform(señales.T).T  
+
+    # Guardar las señales separadas normalizadas
+    for i, señal in enumerate(señales_separadas):
+        señal_mejor = seleccionar_mejores_segmentos(señal, sr, num_segundos=10)
+        señal_mejor = reescalar_señal(señal_mejor)  # Reescalamos la señal antes de guardarla
+        guardar_audio(señal_mejor, sr, f"voz_participante_{i+1}_separada.wav")
   ```
  
- Asumiendo que el ruido capturado es similar al presente en la señal original para permitir la cancelación efectiva.
+El método por el cual se realiza la separación por  FastICA, la cual nos permitio separar las voces
 
 - Resultados Obtenidos
 	- Evaluación cualitativa y cuantitativa se calcula el SNR antes y después de la eliminación del ruido para evaluar la mejora en la calidad.
@@ -124,21 +146,20 @@ plt.show()
    ```python
   messagebox.showinfo("Resultado", f'El archivo filtrado se guardó como: {archivo_filtrado}'
    ```   
-## Resultados 
-Aquí tienes los resultados con la información que mencionaste:  
 
----
 
 ### **Resultados obtenidos**  
-
+En esta primera imagen podemos evidenciar los diferentes micrófonos la densidad espectral de cada uno y la transformada rápida de Fourier 
+![image](https://github.com/user-attachments/assets/22b4b938-8c13-47c4-981e-097ab4c856ef)
+para la siguiente vemos una relación normal o aceptable de la SNR.
+![image](https://github.com/user-attachments/assets/9a5dafc2-7975-44bf-b59b-a9cbe39369c4)
 La mejora en la calidad del audio es evidente gracias al aumento en la relación señal-ruido (SNR), con valores superiores a 32 dB en todos los casos. Esto indica que la señal ha sido limpiada de manera efectiva, reduciendo el impacto del ruido.  
 
 Si bien no se logra una separación perfecta de las voces, sí se pueden distinguir de manera más clara en comparación con el audio original. Esto demuestra que el filtrado aplicado ha sido exitoso en mejorar la inteligibilidad de las señales.  
 
 Es destacable que la voz 2, que en análisis previos había sido la de menor calidad, en esta evaluación muestra la mejor relación SNR con **33.61 dB**, lo que sugiere que el algoritmo de separación ha funcionado especialmente bien en esta señal.  
 
-![image](https://github.com/user-attachments/assets/22b4b938-8c13-47c4-981e-097ab4c856ef)
-![image](https://github.com/user-attachments/assets/9a5dafc2-7975-44bf-b59b-a9cbe39369c4)
+
 
 
 ![18939606-e492-4ab3-8e07-685f906c3090](https://github.com/user-attachments/assets/a8cdccfa-1e4e-47f6-8606-318e8c5dfd47)
