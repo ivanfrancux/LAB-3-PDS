@@ -67,6 +67,7 @@ Posteriormente se recortan todas las señales al mismo número de muestras `min_
    tiempo_captura = len(señal) / sr_senal
    ```
      -Relación Señal-Ruido (SNR):la cual se calcula comparando la potencia de la señal con la del ruido, tomando  la media de los valores al cuadrado (potencia), y se aplica la fórmula del SNR en decibeles
+
    ```python
    potencia_senal = np.mean(señal**2)
    potencia_ruido = np.mean(ruido**2)
@@ -77,7 +78,6 @@ Posteriormente se recortan todas las señales al mismo número de muestras `min_
 -Análisis en el Dominio del Tiempo 
 Gráficas de la señal en el dominio temporal: Se visualizan con `plt.plot(señal)`. Para permiten observar la amplitud y la forma de onda.
 
-
 ```python
 plt.subplot(2, 1, 1)
 plt.plot(señal, label="Señal Original")
@@ -86,9 +86,8 @@ plt.xlabel("Tiempo (muestras)")
 plt.ylabel("Amplitud")
 plt.legend()
 ```
-
 	-Análisis en el Dominio de la Frecuencia
-	Para Espectros de frecuencia: Se obtiene con `np.fft.fft(señal)` para que la escala sea adecuada en el dominio de la frecuencia utilizamos la escala semilogarítmica `plt.semilogy()` para visualizar mejor los componentes frecuenciales.
+Para Espectros de frecuencia: Se obtiene con `np.fft.fft(señal)` para que la escala sea adecuada en el dominio de la frecuencia utilizamos la escala semilogarítmica `plt.semilogy()` para visualizar mejor los componentes frecuenciales.
 
 ```python
 frecuencia = np.fft.fftfreq(len(señal), d=1/sr)
