@@ -126,12 +126,12 @@ plt.show()
    ```   
 ## Resultados 
 ![8e0e4b13-cb1e-410b-a205-a987ad07646b](https://github.com/user-attachments/assets/9dad66e0-2a8a-49c8-b5a6-5e0399aca045)
-
-![ce406a2c-e788-4fd0-b75c-6ede96abfa14](https://github.com/user-attachments/assets/39a2b798-1ff1-4a54-90b6-abc921a29c1c)
-
 ![d67a4c51-7f58-4c4d-baa5-82e444c38e63](https://github.com/user-attachments/assets/f567a829-6ec1-484e-892b-fc6188e4f609)
 
-![641c61cf-314f-4f55-ad54-add83b0b5636](https://github.com/user-attachments/assets/458dbd84-2bf3-45e3-9321-d393796559a0)
+![18939606-e492-4ab3-8e07-685f906c3090](https://github.com/user-attachments/assets/a8cdccfa-1e4e-47f6-8606-318e8c5dfd47)
+![763345c4-28d9-4377-bbad-82df8548b407](https://github.com/user-attachments/assets/b1278dfb-77e4-44f4-8976-810e380efb53)
+
+
 
 
 ## Cocluciones 
