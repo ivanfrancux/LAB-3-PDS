@@ -50,6 +50,33 @@ Posteriormente se recortan todas las señales al mismo número de muestras `min_
    señal_voz3 = señal_voz3[:min_len]
    señal_ruido = señal_ruido[:min_len]
    ```
+- Digitalizacion de la señal.
+   -    Frecuencia de muestreo: La frecuencia de muestreo se obtiene automáticamente cuando se carga el archivo de audio con `librosa.load()`, usando `sr=None` para mantener la frecuencia original del archivo, utilizando `sr_senal`para represenytar la frecuencia de muestreo de la señal de voz
+   ```python
+   señal, sr_senal = librosa.load(audio_senal, sr=None)
+   ruido, sr_ruido = librosa.load(audio_ruido, sr=None)
+   ```  
+
+   - Niveles de cuantificación:  
+   - En este caso, el código trabaja con señales normalizadas entre -1 y 1 (como maneja `librosa`), lo que implica que la cuantificación está en punto flotante y no en valores enteros típicos de PCM.  
+
+3. **Tiempo de captura:**  
+   - El tiempo de captura se puede calcular dividiendo el número de muestras por la frecuencia de muestreo:  
+   ```python
+   tiempo_captura = len(señal) / sr_senal
+   ```
+   - La cantidad de muestras de la señal (`len(señal)`) se divide por la frecuencia de muestreo (`sr_senal`) para obtener el tiempo en segundos.  
+
+4. **Relación Señal-Ruido (SNR):**  
+   - Se calcula comparando la potencia de la señal con la del ruido:  
+   ```python
+   potencia_senal = np.mean(señal**2)
+   potencia_ruido = np.mean(ruido**2)
+   snr = 10 * np.log10(potencia_senal / potencia_ruido)
+   ```
+   - Se toma la media de los valores al cuadrado (potencia), y se aplica la fórmula del SNR en decibeles.  
+
+Estos pasos reflejan cómo el código digitaliza, procesa y analiza las señales de audio.
 
 
 ## Análisis Temporal y Frecuencial 
