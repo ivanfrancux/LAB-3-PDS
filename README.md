@@ -60,7 +60,6 @@ Posteriormente se recortan todas las señales al mismo número de muestras `min_
    ```  
 
    - Niveles de cuantificación:  En 'librosa' se normaliza las señales con valores entre -1 y 1 lo que hace que la cuantificacion este en un punto flotante y no con valores enteros tipocos de PCM  (Pulse Code Modulation, o Modulación por Código de Pulsos).
-   - 
    -Tiempo de captura: El tiempo de captura se puede calcular dividiendo el número de muestras por la frecuencia de muestreo, siendo la cantidad de muestras de la señal (`len(señal)`) se divide por la frecuencia de muestreo (`sr_senal`) para obtener el tiempo en segundos.  
 
 
@@ -104,6 +103,28 @@ plt.show()
 ```
 
 ## Separacion de Fuentes 
+- Métodos Utilizados
+	- Descripción del algoritmo de separación se usa la resta entre la señal original y el ruido (`señal - ruido`) para obtener una señal limpia.
+  
+  ```python
+  señal_sin_ruido = señal - ruido
+  señal_sin_ruido = np.clip(señal_sin_ruido, -1.0, 1.0)  # Evita saturación
+  sf.write("salida_sin_ruido.wav", señal_sin_ruido, sr_senal)
+  ```
+ 
+ Asumiendo que el ruido capturado es similar al presente en la señal original para permitir la cancelación efectiva.
+
+- Resultados Obtenidos**
+	- Evaluación cualitativa y cuantitativa se calcula el SNR antes y después de la eliminación del ruido para evaluar la mejora en la calidad.
+
+  ```python
+  snr = 10 * np.log10(np.mean(señal**2) / np.mean(ruido**2))
+  ```
+	- Discusión sobre la calidad del audio se presentan los archivos generados (`salida_sin_ruido.wav` y `voz_filtrada.wav`), evaluando subjetivamente la mejora en claridad.
+
+   ```python
+  messagebox.showinfo("Resultado", f'El archivo filtrado se guardó como: {archivo_filtrado}')
+```   
 ## Resultados 
 ## Cocluciones 
 
