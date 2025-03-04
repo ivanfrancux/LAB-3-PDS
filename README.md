@@ -123,8 +123,8 @@ plt.show()
 	- Discusión sobre la calidad del audio se presentan los archivos generados (`salida_sin_ruido.wav` y `voz_filtrada.wav`), evaluando subjetivamente la mejora en claridad.
 
    ```python
-  messagebox.showinfo("Resultado", f'El archivo filtrado se guardó como: {archivo_filtrado}')
-```   
+  messagebox.showinfo("Resultado", f'El archivo filtrado se guardó como: {archivo_filtrado}'
+   ```   
 ## Resultados 
 ## Cocluciones 
 
