@@ -26,7 +26,38 @@ Tiempo de captura: 18 segundos.
 Gracias a esta disposición, se logró registrar una mezcla de voces en cada micrófono, permitiendo la posterior aplicación de técnicas de separación de fuentes en el procesamiento de la señal.
 ![b6d2aa7b-32d2-4bd8-825b-8dc109608625](https://github.com/user-attachments/assets/204a6149-b674-4dd8-8193-29ccc6ef0ea6)
 
-## 
+## Captura de la Señal 
+- Procesamiento de los archivos de audio
+Primero se cargan a Python usando 'filedialog.askopenfilename()' para que asi quien maneje el programa pueda seleccionar los archivos de tres voces y un archivo con el ruido ambiente.
+   ```python
+   archivo_voz1 = cargar_archivo('Voz 1')
+   archivo_voz2 = cargar_archivo('Voz 2')
+   archivo_voz3 = cargar_archivo('Voz 3')
+   archivo_ruido = cargar_archivo('Ruido Ambiental')
+   ```
+Una vez caragados estos archivos se utiliza `librosa.load()`para cargar cada archivo y convertirlo en una señal digital con su frecuencia de muestreo (`sr`).  
+```python
+   señal_voz1, sr1 = librosa.load(archivo_voz1, sr=None)
+   señal_voz2, sr2 = librosa.load(archivo_voz2, sr=None)
+   señal_voz3, sr3 = librosa.load(archivo_voz3, sr=None)
+   señal_ruido, sr_ruido = librosa.load(archivo_ruido, sr=None)
+   ```
+Posteriormente se recortan todas las señales al mismo número de muestras `min_len`) para alinearlas y así poder comparararlas de la mejor manera, y asi porcesar las sañles correctamente para que tengan la misma duracion. 
+   ```python
+ min_len = min(len(señal_voz1), len(señal_voz2), len(señal_voz3), len(señal_ruido))
+   señal_voz1 = señal_voz1[:min_len]
+   señal_voz2 = señal_voz2[:min_len]
+   señal_voz3 = señal_voz3[:min_len]
+   señal_ruido = señal_ruido[:min_len]
+   ```
+
+
+## Análisis Temporal y Frecuencial 
+## Separacion de Fuentes 
+## Resultados 
+## Cocluciones 
+
+
 ## Requisistos 
 - Python 3.9
 - numpy 
