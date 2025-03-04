@@ -131,8 +131,14 @@ plt.show()
 ![ce406a2c-e788-4fd0-b75c-6ede96abfa14](https://github.com/user-attachments/assets/39a2b798-1ff1-4a54-90b6-abc921a29c1c)
 
 ## Cocluciones 
+- Limitaciones en la Separación de Fuentes: a pesar de aplicar técnicas básicas de separación de señales mediante sustracción de ruido, no se logró aislar cada una de las tres voces con la claridad deseada. Esto sugiere que la metodología utilizada no es completamente efectiva para resolver el problema de la "Fiesta del Cóctel", lo que indica la necesidad de explorar métodos más avanzados.  
 
+- Influencia del Entorno en la Captura de la Señal la reverberación y las reflexiones del sonido en el entorno de grabación probablemente afectaron la calidad de las señales capturadas, dificultando su separación. El uso de un espacio con menor reverberación o la implementación de técnicas de preprocesamiento para reducir estos efectos podría mejorar los resultados en futuras pruebas.  
 
+- Impacto de la Configuración de los Micrófonos la disposición de los micrófonos influyó en la captación de las señales, lo que puede haber generado una mezcla demasiado compleja para ser separada con los métodos empleados. Se pueden estudiar configuraciones de grabación más optimizadas, incluyendo micrófonos direccionales.  
+
+- Necesidad de Mejorar la Relación Señal-Ruido (SNR) el cálculo del SNR antes y después del procesamiento mostró mejoras limitadas, lo que indica que la señal recuperada aún contiene una cantidad considerable de interferencia. Esto sugiere que la técnica utilizada no es la más adecuada para mejorar la inteligibilidad de las voces en escenarios de mezcla compleja.
+  
 ## Requisistos 
 - Python 3.9
 - numpy 
