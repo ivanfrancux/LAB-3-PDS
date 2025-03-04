@@ -125,6 +125,19 @@ plt.show()
   messagebox.showinfo("Resultado", f'El archivo filtrado se guardó como: {archivo_filtrado}'
    ```   
 ## Resultados 
+Aquí tienes los resultados con la información que mencionaste:  
+
+---
+
+### **Resultados obtenidos**  
+
+La mejora en la calidad del audio es evidente gracias al aumento en la relación señal-ruido (SNR), con valores superiores a 32 dB en todos los casos. Esto indica que la señal ha sido limpiada de manera efectiva, reduciendo el impacto del ruido.  
+
+Si bien no se logra una separación perfecta de las voces, sí se pueden distinguir de manera más clara en comparación con el audio original. Esto demuestra que el filtrado aplicado ha sido exitoso en mejorar la inteligibilidad de las señales.  
+
+Es destacable que la voz 2, que en análisis previos había sido la de menor calidad, en esta evaluación muestra la mejor relación SNR con **33.61 dB**, lo que sugiere que el algoritmo de separación ha funcionado especialmente bien en esta señal.  
+
+
 ![8e0e4b13-cb1e-410b-a205-a987ad07646b](https://github.com/user-attachments/assets/9dad66e0-2a8a-49c8-b5a6-5e0399aca045)
 ![d67a4c51-7f58-4c4d-baa5-82e444c38e63](https://github.com/user-attachments/assets/f567a829-6ec1-484e-892b-fc6188e4f609)
 
