@@ -137,9 +137,9 @@ Si bien no se logra una separación perfecta de las voces, sí se pueden disting
 
 Es destacable que la voz 2, que en análisis previos había sido la de menor calidad, en esta evaluación muestra la mejor relación SNR con **33.61 dB**, lo que sugiere que el algoritmo de separación ha funcionado especialmente bien en esta señal.  
 
+![image](https://github.com/user-attachments/assets/22b4b938-8c13-47c4-981e-097ab4c856ef)
+![image](https://github.com/user-attachments/assets/9a5dafc2-7975-44bf-b59b-a9cbe39369c4)
 
-![8e0e4b13-cb1e-410b-a205-a987ad07646b](https://github.com/user-attachments/assets/9dad66e0-2a8a-49c8-b5a6-5e0399aca045)
-![d67a4c51-7f58-4c4d-baa5-82e444c38e63](https://github.com/user-attachments/assets/f567a829-6ec1-484e-892b-fc6188e4f609)
 
 ![18939606-e492-4ab3-8e07-685f906c3090](https://github.com/user-attachments/assets/a8cdccfa-1e4e-47f6-8606-318e8c5dfd47)
 ![763345c4-28d9-4377-bbad-82df8548b407](https://github.com/user-attachments/assets/b1278dfb-77e4-44f4-8976-810e380efb53)
